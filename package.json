@@ -1,0 +1,30 @@
+{
+  "name": "odin-battleship",
+  "version": "1.0.0",
+  "description": "https://www.theodinproject.com/lessons/node-path-javascript-battleship",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack serve --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tatadashi/odin-battleship.git"
+  },
+  "keywords": [],
+  "author": "Kenny Luu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tatadashi/odin-battleship/issues"
+  },
+  "homepage": "https://github.com/Tatadashi/odin-battleship#readme",
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.3",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0"
+  }
+}
