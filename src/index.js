@@ -1,3 +1,7 @@
-import './style.css';
+import "./style.css";
 
-console.log('hello world');
+function hi() {
+  return 2;
+}
+
+export { hi };
