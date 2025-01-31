@@ -8,11 +8,6 @@ module.exports = {
   devServer: {
     static: "./dist",
   },
-  "jest": {
-  "moduleNameMapper": {
-    "\\.(css|jpg|png)$": "<rootDir>/empty-module.js"
-  }
-  },
   plugins: [
     new HtmlWebpackPlugin({
       title: "Odin Battleship",
