@@ -15,7 +15,6 @@ class Ship {
       this.#isSunk();
     }
   }
-
   #isSunk() {
     if (this.#hits === this.#length) {
       this.sunk = true;
@@ -23,4 +22,24 @@ class Ship {
   }
 }
 
-export { Ship };
+class GameBoard {
+  #board
+  constructor() {
+    this.#board = this.createBoard(10);
+  }
+  
+  get board() {
+    console.table(this.#board);
+  }
+
+  createBoard(boardSize) {
+    const arr = new Array(boardSize);
+    for (let i = 0; i < arr.length; i++) {
+      arr[i] = new Array(boardSize).fill("");
+    }
+
+    return arr;
+  }
+}
+
+export { Ship, GameBoard };

@@ -1,4 +1,4 @@
-import { Ship } from "../index.js";
+import { Ship, GameBoard } from "../index.js";
 
 describe("Ship public properties and methods", () => {
   const testShip = new Ship(1);
@@ -11,4 +11,14 @@ describe("Ship public properties and methods", () => {
     testShip.hit();
     expect(testShip.sunk).toBeTruthy();
   });
+});
+
+describe("Gameboard public properties and methods", () => {
+  const testBoard = new GameBoard();
+  const testShip = new Ship(1);
+  testBoard.board
+
+  // test("place ship at A5", () => {
+  //   expect(testBoard.place(testShip, ['A', 5], true))
+  // });
 });
