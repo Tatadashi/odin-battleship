@@ -38,10 +38,6 @@ class GameBoard {
   constructor() {
     this.#board = this.createBoard(10);
   }
-  
-  get board() {
-    console.table(this.#board);
-  }
 
   createBoard(boardSize) {
     const arr = new Array(boardSize);
@@ -53,6 +49,16 @@ class GameBoard {
   }
 
   place(ship, coord, isVertical) {
+    if (this.canPlace(ship, coord, isVertical)) {
+      this.#board[coord[0]][coord[1]].occupied = true;
+      this.#board[coord[0]][coord[1]].occupant = ship;
+      return this.#board[coord[0]][coord[1]].occupied;
+    }
+    
+    return false;
+  }
+
+  canPlace(ship, coord, isVertical) {
     if (isVertical) {
       if ((coord[0] + ship.length) > 10) {
         return false;

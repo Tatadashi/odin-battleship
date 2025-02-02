@@ -7,9 +7,9 @@ describe("Ship public properties and methods", () => {
     expect(testShip.sunk).toBeFalsy();
   });
 
-  test("hit method changes sunk property if ship is sunk", () => {
+  test("hit method changes sunk property true if ship is sunk", () => {
     testShip.hit();
-    expect(testShip.sunk).toBeTruthy();
+    expect(testShip.sunk).toBe(true);
   });
 });
 
@@ -18,6 +18,6 @@ describe("Gameboard public properties and methods", () => {
   
   test("place ship of size 4 horizontally at F5", () => {
     const testShip = new Ship(4);
-    expect(testBoard.place(testShip, [4, 5], false)).toBeTruthy();
+    expect(testBoard.place(testShip, [4, 5], false)).toBe(true);
   });
 });
