@@ -22,6 +22,13 @@ class Ship {
   }
 }
 
+class Space {
+  constructor() {
+    this.occupant = null;
+    this.occupied = false;
+  }
+}
+
 class GameBoard {
   #board
   constructor() {
@@ -35,7 +42,7 @@ class GameBoard {
   createBoard(boardSize) {
     const arr = new Array(boardSize);
     for (let i = 0; i < arr.length; i++) {
-      arr[i] = new Array(boardSize).fill("");
+      arr[i] = new Array(boardSize).fill(new Space());
     }
 
     return arr;
