@@ -9,6 +9,10 @@ class Ship {
     this.sunk = false;
   }
 
+  get length() {
+    return this.#length;
+  }
+
   hit() {
     if (!this.sunk) {
       this.#hits++;
@@ -46,6 +50,21 @@ class GameBoard {
     }
 
     return arr;
+  }
+
+  place(ship, coord, isVertical) {
+    if (isVertical) {
+      if ((coord[0] + ship.length) > 10) {
+        return false;
+      }
+      return true
+    }
+    
+    if (coord[1] + ship.length > 10) {
+      return false;
+      
+    }
+    return true;
   }
 }
 

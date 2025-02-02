@@ -15,9 +15,9 @@ describe("Ship public properties and methods", () => {
 
 describe("Gameboard public properties and methods", () => {
   const testBoard = new GameBoard();
-  const testShip = new Ship(1);
-
-  // test("place ship at A5", () => {
-  //   expect(testBoard.place(testShip, ['A', 5], true))
-  // });
+  
+  test("place ship of size 4 horizontally at F5", () => {
+    const testShip = new Ship(4);
+    expect(testBoard.place(testShip, [4, 5], false)).toBeTruthy();
+  });
 });
