@@ -1,3 +1,71 @@
 body {
-  background-color: aquamarine;
+  background-color: darkseagreen;
+  height: 100vh;
+  margin-block: 0;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 5px;
+}
+
+#title {
+  font-weight: bolder;
+  font-size: 65px;
+  text-align: center;
+}
+
+#top-section {
+  display: flex;
+  justify-content: space-around;
+}
+
+.name {
+  font-size: xx-large;
+  font-style: italic;
+  text-decoration: underline pink;
+  text-underline-offset: 8px;
+}
+
+#announcement {
+  font-weight: bold;
+  font-size: xx-large;
+}
+
+#board-section {
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-around;
+  margin-inline: 10px;
+  align-items: center;
+  background-color: aqua;
+}
+
+/*TODO make borders not overlap*/
+.board {
+  display: flex;
+  flex-grow: 1;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  min-height: 10px;
+}
+
+.space {
+  border: black solid 1px;
+  aspect-ratio: 1 / 1;
+  min-width: 25px;
+  max-height: 40px;
+}
+
+.space:hover {
+  opacity: 30%;
+  background-color: gold;
+  cursor: pointer;
+}
+
+#border {
+  border-inline:orangered solid 5px;
+  height: 100%;
 }

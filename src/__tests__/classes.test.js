@@ -1,4 +1,4 @@
-import { Ship, GameBoard } from "../index.js";
+import { Ship, GameBoard } from "../classes.js";
 
 describe("Ship public properties and methods", () => {
   const testShip = new Ship(1);
