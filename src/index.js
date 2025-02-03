@@ -49,7 +49,7 @@ class GameBoard {
   }
 
   place(ship, coord, isVertical) {
-    if (this.canPlace(ship, coord, isVertical)) {
+    if (this.hasRoom(ship, coord, isVertical) && !this.isOccupied(ship, coord, isVertical)) {
       this.#board[coord[0]][coord[1]].occupied = true;
       this.#board[coord[0]][coord[1]].occupant = ship;
       return this.#board[coord[0]][coord[1]].occupied;
@@ -58,7 +58,7 @@ class GameBoard {
     return false;
   }
 
-  canPlace(ship, coord, isVertical) {
+  hasRoom(ship, coord, isVertical) {
     if (isVertical) {
       if ((coord[0] + ship.length) > 10) {
         return false;
@@ -71,6 +71,22 @@ class GameBoard {
       
     }
     return true;
+  }
+
+  isOccupied(ship, coord, isVertical) {
+    for (let i = 0; i < ship.length; i++) {
+      if (isVertical) {
+        if (this.#board[coord[0]][coord[1] + i].occupied) {
+          return true;
+        }
+      }
+
+      if (this.#board[coord[0] + i][coord[1]].occupied) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
 

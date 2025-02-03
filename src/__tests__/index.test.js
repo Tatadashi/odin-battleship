@@ -20,4 +20,8 @@ describe("Gameboard public properties and methods", () => {
     const testShip = new Ship(4);
     expect(testBoard.place(testShip, [4, 5], false)).toBe(true);
   });
+
+  test("recieve attack successfully", () => {
+    
+  })
 });
