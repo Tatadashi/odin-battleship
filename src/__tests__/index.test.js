@@ -15,13 +15,27 @@ describe("Ship public properties and methods", () => {
 
 describe("Gameboard public properties and methods", () => {
   const testBoard = new GameBoard();
+  const testShip = new Ship(4);
   
   test("place ship of size 4 horizontally at F5", () => {
-    const testShip = new Ship(4);
     expect(testBoard.place(testShip, [4, 5], false)).toBe(true);
   });
 
-  test("recieve attack successfully", () => {
-    
-  })
+  test("receive attack successfully", () => {
+    testBoard.receiveAttack([4, 5]);
+    expect(testShip.hits).toBe(1);
+  });
+
+    test("missed attack successfully", () => {
+      testBoard.receiveAttack([1, 2]);
+      expect(testBoard.board[1][2].missed).toBe(true);
+    });
+
+
+  test("sink ship successfully", () => {
+    testBoard.receiveAttack([4, 5]);
+    testBoard.receiveAttack([4, 5]);
+    testBoard.receiveAttack([4, 5]);
+    expect(testShip.sunk).toBe(true);
+  });
 });

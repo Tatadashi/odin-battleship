@@ -12,6 +12,9 @@ class Ship {
   get length() {
     return this.#length;
   }
+  get hits() {
+    return this.#hits;
+  }
 
   hit() {
     if (!this.sunk) {
@@ -30,6 +33,8 @@ class Space {
   constructor() {
     this.occupant = null;
     this.occupied = false;
+    this.shot = false;
+    this.missed = null;
   }
 }
 
@@ -37,6 +42,10 @@ class GameBoard {
   #board
   constructor() {
     this.#board = this.createBoard(10);
+  }
+
+  get board() {
+    return this.#board;
   }
 
   createBoard(boardSize) {
@@ -47,7 +56,6 @@ class GameBoard {
 
     return arr;
   }
-
   place(ship, coord, isVertical) {
     if (this.hasRoom(ship, coord, isVertical) && !this.isOccupied(ship, coord, isVertical)) {
       this.#board[coord[0]][coord[1]].occupied = true;
@@ -57,7 +65,6 @@ class GameBoard {
     
     return false;
   }
-
   hasRoom(ship, coord, isVertical) {
     if (isVertical) {
       if ((coord[0] + ship.length) > 10) {
@@ -72,7 +79,6 @@ class GameBoard {
     }
     return true;
   }
-
   isOccupied(ship, coord, isVertical) {
     for (let i = 0; i < ship.length; i++) {
       if (isVertical) {
@@ -87,6 +93,16 @@ class GameBoard {
     }
 
     return false;
+  }
+  //check if place is shot before can receive attack
+  receiveAttack(coord) {
+    if (this.#board[coord[0]][coord[1]].occupied) {
+      const ship = this.#board[coord[0]][coord[1]].occupant;
+      ship.hit();
+    }
+
+    this.#board[coord[0]][coord[1]].shot = true;
+    this.#board[coord[0]][coord[1]].missed = true;
   }
 }
 
