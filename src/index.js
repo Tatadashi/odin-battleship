@@ -39,9 +39,13 @@ class Space {
 }
 
 class GameBoard {
-  #board
+  #board;
+  #shipCount;
+  #sunkCount;
   constructor() {
     this.#board = this.createBoard(10);
+    this.#shipCount = 0;
+    this.#sunkCount = 0;
   }
 
   get board() {
@@ -60,6 +64,7 @@ class GameBoard {
     if (this.hasRoom(ship, coord, isVertical) && !this.isOccupied(ship, coord, isVertical)) {
       this.#board[coord[0]][coord[1]].occupied = true;
       this.#board[coord[0]][coord[1]].occupant = ship;
+      this.#shipCount++;
       return this.#board[coord[0]][coord[1]].occupied;
     }
     
@@ -70,13 +75,14 @@ class GameBoard {
       if ((coord[0] + ship.length) > 10) {
         return false;
       }
+
       return true
     }
     
     if (coord[1] + ship.length > 10) {
       return false;
-      
     }
+
     return true;
   }
   isOccupied(ship, coord, isVertical) {
@@ -99,10 +105,22 @@ class GameBoard {
     if (this.#board[coord[0]][coord[1]].occupied) {
       const ship = this.#board[coord[0]][coord[1]].occupant;
       ship.hit();
+      
+      if (ship.sunk) {
+        this.#sunkCount++;
+      }
     }
 
     this.#board[coord[0]][coord[1]].shot = true;
     this.#board[coord[0]][coord[1]].missed = true;
+  }
+  //check after receiving attack to check if game ends
+  hasShips() {
+    if (this.#shipCount === this.#sunkCount) {
+      return false;
+    }
+    
+    return true;
   }
 }
 

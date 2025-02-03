@@ -4,7 +4,7 @@ describe("Ship public properties and methods", () => {
   const testShip = new Ship(1);
 
   test("return sunk property false", () => {
-    expect(testShip.sunk).toBeFalsy();
+    expect(testShip.sunk).toBe(false);
   });
 
   test("hit method changes sunk property true if ship is sunk", () => {
@@ -16,26 +16,29 @@ describe("Ship public properties and methods", () => {
 describe("Gameboard public properties and methods", () => {
   const testBoard = new GameBoard();
   const testShip = new Ship(4);
-  
-  test("place ship of size 4 horizontally at F5", () => {
+
+  test("places ship of size 4 horizontally at F5", () => {
     expect(testBoard.place(testShip, [4, 5], false)).toBe(true);
   });
 
-  test("receive attack successfully", () => {
+  test("receives attack successfully", () => {
     testBoard.receiveAttack([4, 5]);
     expect(testShip.hits).toBe(1);
   });
 
-    test("missed attack successfully", () => {
-      testBoard.receiveAttack([1, 2]);
-      expect(testBoard.board[1][2].missed).toBe(true);
-    });
+  test("misses attack successfully", () => {
+    testBoard.receiveAttack([1, 2]);
+    expect(testBoard.board[1][2].missed).toBe(true);
+  });
 
-
-  test("sink ship successfully", () => {
+  test("sinks ship successfully", () => {
     testBoard.receiveAttack([4, 5]);
     testBoard.receiveAttack([4, 5]);
     testBoard.receiveAttack([4, 5]);
     expect(testShip.sunk).toBe(true);
+  });
+
+  test("returns no ship remaining on board", () => {
+    expect(testBoard.hasShips()).toBe(false);
   });
 });
