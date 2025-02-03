@@ -124,4 +124,19 @@ class GameBoard {
   }
 }
 
-export { Ship, GameBoard };
+class Player {
+  #isComputer;
+  #name;
+  #board;
+  constructor(isComputer, name="Computer") {
+    this.#isComputer = isComputer;
+    this.#name = name;
+    this.#board = new GameBoard();
+  }
+
+  get name() {
+    return this.#name;
+  }
+}
+
+export { Ship, GameBoard, Player };
