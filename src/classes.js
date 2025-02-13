@@ -51,9 +51,12 @@ class GameBoard {
   }
 
   createBoard(boardSize) {
-    const arr = new Array(boardSize);
+    let arr = new Array(boardSize);
     for (let i = 0; i < arr.length; i++) {
-      arr[i] = new Array(boardSize).fill(new Space());
+      arr[i] = new Array(boardSize);
+      for (let j = 0; j < arr.length; j++) {
+        arr[i][j] = new Space();
+      }
     }
 
     return arr;
@@ -125,15 +128,25 @@ class GameBoard {
 class Player {
   #isComputer;
   #name;
-  #board;
-  constructor(isComputer, name="Computer") {
+  #area;
+  #number;
+  constructor(number, isComputer, name="Computer") {
+    this.#number = number;
     this.#isComputer = isComputer;
     this.#name = name;
-    this.#board = new GameBoard();
+    this.#area = new GameBoard();
+  }
+
+  get number() {
+    return this.#number;
   }
 
   get name() {
     return this.#name;
+  }
+
+  get area() {
+    return this.#area;
   }
 }
 
