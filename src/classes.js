@@ -113,14 +113,16 @@ class GameBoard {
     if (this.#board[coord[0]][coord[1]].occupied) {
       const ship = this.#board[coord[0]][coord[1]].occupant;
       ship.hit();
+      this.#board[coord[0]][coord[1]].missed = false;
       
       if (ship.sunk) {
         this.#sunkCount++;
       }
+    } else {
+      this.#board[coord[0]][coord[1]].missed = true;
     }
 
     this.#board[coord[0]][coord[1]].shot = true;
-    this.#board[coord[0]][coord[1]].missed = true;
   }
   //check after receiving attack to check if game ends
   hasShips() {
