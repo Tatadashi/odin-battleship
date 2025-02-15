@@ -34,4 +34,3 @@ const player2 = new Player(2, false, 'Player 2');
 
 player1.area.place(new Ship(4), [0, 0], false);
 updateBoard(player1);
-console.log(player1.number)

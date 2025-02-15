@@ -17,8 +17,9 @@ describe("Gameboard public properties and methods", () => {
   const testBoard = new GameBoard();
   const testShip = new Ship(4);
 
-  it("places ship of size 4 horizontally at F5", () => {
-    expect(testBoard.place(testShip, [4, 5], false)).toBe(true);
+  it("places ship of size 4 horizontally at F5 and passes check at F7", () => {
+    testBoard.place(testShip, [4, 5], false);
+    expect(testBoard.board[4][7].occupant).toBe(testShip);
   });
 
   it("receives attack successfully", () => {

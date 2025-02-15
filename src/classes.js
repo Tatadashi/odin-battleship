@@ -63,10 +63,17 @@ class GameBoard {
   }
   place(ship, coord, isVertical) {
     if (this.hasRoom(ship, coord, isVertical) && !this.isOccupied(ship, coord, isVertical)) {
-      this.#board[coord[0]][coord[1]].occupied = true;
-      this.#board[coord[0]][coord[1]].occupant = ship;
+      for (let i = 0; i < ship.length; i++) {
+        if (isVertical) {
+          this.#board[coord[0] + i][coord[1]].occupied = true;
+          this.#board[coord[0] + i][coord[1]].occupant = ship;
+        } else {
+          this.#board[coord[0]][coord[1] + i].occupied = true;
+          this.#board[coord[0]][coord[1] + i].occupant = ship;
+        }
+      }
+
       this.#shipCount++;
-      return this.#board[coord[0]][coord[1]].occupied;
     }
     
     return false;
