@@ -108,7 +108,6 @@ class GameBoard {
 
     return false;
   }
-  //check if place is shot before can receive attack
   receiveAttack(coord) {
     if (this.#board[coord[0]][coord[1]].occupied) {
       const ship = this.#board[coord[0]][coord[1]].occupant;
@@ -124,7 +123,6 @@ class GameBoard {
 
     this.#board[coord[0]][coord[1]].shot = true;
   }
-  //check after receiving attack to check if game ends
   hasShips() {
     if (this.#shipCount === this.#sunkCount) {
       return false;
@@ -144,6 +142,7 @@ class Player {
     this.#isComputer = isComputer;
     this.#name = name;
     this.#area = new GameBoard();
+    this.shootable = false;
   }
 
   get number() {

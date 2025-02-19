@@ -41,19 +41,37 @@ function spaceHasClass(boardDiv, row, col, className) {
 function startTurn(player) {
     const announcement = document.getElementById('announcement');
     announcement.textContent = `${player.name}'s Turn`;
+
+    const targetPlayer = findOtherPlayer(player);
+    player.shootable = false;
+    targetPlayer.shootable = true;
+
+    const currentPlayerOverlay = document.getElementById(`overlay-${player.number}`);
+    const targetPlayerOverlay = document.getElementById(`overlay-${targetPlayer.number}`);
+    currentPlayerOverlay.style.visibility = 'visible';
+    targetPlayerOverlay.style.visibility = 'hidden';
 }
 
-/*
-onclick specific space (SHOULD NOT BE CLICKABLE UNTIL INITIAL SETUP DONE)
-    targetPlayer = identifyTarget() [check parent id?]
+function addAllSpaceClickEvents() {
+    const board1 = document.getElementById('board-1');
+    const board2 = document.getElementById("board-2");
+    
+    for (let row = 0; row < 10; row++) {
+        for (let col = 0; col < 10; col++) {
+            addSpaceClick(player1, board1.children[row].children[col], [row, col]);
+            addSpaceClick(player2, board2.children[row].children[col], [row, col]);
+        }
+    }
+}
 
-    check if player.area.board[coordY][coordX].shot === true
-        player.area.receiveAttack(coord)
-        check if player.area.hasShips()
-            endgame()
-        check if player.area.board[coordY][coordX].missed === false
-            startTurn(player) [they go againn]
-*/
+function addSpaceClick(player, space, coord) {
+    space.addEventListener('click', (e) => {
+        if (player.shootable) {
+            shoot(player, coord);
+        }
+    });
+}
+
 function shoot(targetPlayer, coord) {
     const currentPlayer = findOtherPlayer(targetPlayer);
     if (!targetPlayer.area.board[coord[0]][coord[1]].shot) {
@@ -66,8 +84,6 @@ function shoot(targetPlayer, coord) {
 
         if (!targetPlayer.area.board[coord[0]][coord[1]].missed) {
             startTurn(currentPlayer);
-            console.log(currentPlayer)
-            console.log(targetPlayer)
         } else {
             startTurn(targetPlayer);
         }
@@ -92,12 +108,12 @@ const player1Title = document.getElementById('player-1');
 const player2Title = document.getElementById('player-2');
 player1Title.textContent = `${player1.name}`;
 player2Title.textContent = `${player2.name}`;
-startTurn(player1);
+addAllSpaceClickEvents();
 
 //place turns
 player1.area.place(new Ship(4), [0, 0], false);
 player2.area.place(new Ship(4), [4, 2], true);
+updateBoard(player1);
+updateBoard(player2);
 
-shoot(player2, [4, 2]);
-shoot(player2, [4, 1]);
-shoot(player1, [0, 1]);
+startTurn(player1);
