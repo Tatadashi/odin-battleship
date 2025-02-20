@@ -45,13 +45,13 @@ describe("Gameboard public properties and methods", () => {
 });
 
 describe("Player public properties and methods", () => {
-  const player = new Player(false, 'Jon');
+  const player = new Player(false, "Jon");
 
-  it('create player board correctly', () => {
+  it("create player board correctly", () => {
     expect(player.area.board[0][0].occupied).toBe(false);
   });
 
-  it('places new ship on player board', () => {
+  it("places new ship on player board", () => {
     player.area.place(new Ship(2), [0, 0], false);
     expect(player.area.board[0][2].occupied).toBe(false);
   });

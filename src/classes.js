@@ -62,7 +62,10 @@ class GameBoard {
     return arr;
   }
   place(ship, coord, isVertical) {
-    if (this.hasRoom(ship, coord, isVertical) && !this.isOccupied(ship, coord, isVertical)) {
+    if (
+      this.hasRoom(ship, coord, isVertical) &&
+      !this.isOccupied(ship, coord, isVertical)
+    ) {
       for (let i = 0; i < ship.length; i++) {
         if (isVertical) {
           this.#board[coord[0] + i][coord[1]].occupied = true;
@@ -75,18 +78,18 @@ class GameBoard {
 
       this.#shipCount++;
     }
-    
+
     return false;
   }
   hasRoom(ship, coord, isVertical) {
     if (isVertical) {
-      if ((coord[0] + ship.length) > 10) {
+      if (coord[0] + ship.length > 10) {
         return false;
       }
 
-      return true
+      return true;
     }
-    
+
     if (coord[1] + ship.length > 10) {
       return false;
     }
@@ -113,7 +116,7 @@ class GameBoard {
       const ship = this.#board[coord[0]][coord[1]].occupant;
       ship.hit();
       this.#board[coord[0]][coord[1]].missed = false;
-      
+
       if (ship.sunk) {
         this.#sunkCount++;
       }
@@ -127,7 +130,7 @@ class GameBoard {
     if (this.#shipCount === this.#sunkCount) {
       return false;
     }
-    
+
     return true;
   }
 }
@@ -137,7 +140,7 @@ class Player {
   #name;
   #area;
   #number;
-  constructor(number, isComputer, name="Computer") {
+  constructor(number, isComputer, name = "Computer") {
     this.#number = number;
     this.#isComputer = isComputer;
     this.#name = name;
