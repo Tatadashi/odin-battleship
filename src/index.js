@@ -63,7 +63,10 @@ function startTurn(player) {
 
   const targetPlayer = findOtherPlayer(player);
   player.shootable = false;
-  targetPlayer.shootable = true;
+    targetPlayer.shootable = true;
+    
+    updateBoard(player);
+    updateBoard(targetPlayer);
 
   const currentPlayerOverlay = document.getElementById(
     `overlay-${player.number}`

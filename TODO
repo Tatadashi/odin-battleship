@@ -1,0 +1,26 @@
+Pass turns
+	Temp color for To Be Hit
+	UpdateBoard(curr) to reflect this
+	Allow another click on other spaces but remove from last
+
+Computer Shoot(hasHit = false)
+	If (hasHit) Shoot Adjacent Spaces Unless none left
+	Random Attack until Valid
+
+Main Menu Modal (restrict input outside)
+	Choose Mode P v P, P v C, C v P, C v C
+	P has expanded fields for Name
+	Start Game button
+
+Menu Button Modal (restrict input outside)
+	Restart Game button
+	Exit to Main Menu Modal button
+	Top Right X to get out of Modal
+
+Coin Flip to see who goes first (prob a modal)
+	Choose random player to pick Heads/Tails (and show msg indicating who)
+	Player who is right gets to choose 1st or 2nd (show msg too)
+
+Place Ship Phase
+	Allow in Turn Order to Drag and Drop ships
+	(have to prob adjust size a bit)
