@@ -12,10 +12,16 @@ function updateBoard(player) {
   const board = player.area.board;
   for (let row = 0; row < 10; row++) {
     for (let col = 0; col < 10; col++) {
-      //if has ship, if shot (if missed)
       const space = board[row][col];
-      if (space.occupied && !spaceHasClass(boardDiv, row, col, "ship")) {
+      if (
+        space.occupied &&
+        !spaceHasClass(boardDiv, row, col, "ship" && !player.shootable)
+      ) {
         boardDiv.children[row].children[col].classList.add("ship");
+      }
+
+      if (player.shootable) {
+        boardDiv.children[row].children[col].classList.remove("ship");
       }
 
       if (
@@ -70,16 +76,17 @@ function startTurn(player) {
 }
 
 function endGame(winner, loser) {
-    const announcement = document.getElementById("announcement");
-    announcement.textContent = `${winner.name} Wins!`;
+  const announcement = document.getElementById("announcement");
+  announcement.textContent = `${winner.name} Wins!`;
 
-    const winnerOverlay = document.getElementById(`overlay-${winner.number}`);
-    winnerOverlay.style.visibility = "hidden";
+  const winnerOverlay = document.getElementById(`overlay-${winner.number}`);
+  winnerOverlay.style.visibility = "hidden";
 
-    loser.shootable = false;
+  updateBoard(winner);
+  loser.shootable = false;
 
-    const button = document.getElementById('turn-button');
-    button.textContent = 'Play Again';
+  const button = document.getElementById("turn-button");
+  button.textContent = "Play Again";
 }
 
 function shoot(targetPlayer, coord) {
@@ -89,8 +96,8 @@ function shoot(targetPlayer, coord) {
     updateBoard(targetPlayer);
 
     if (!targetPlayer.area.hasShips()) {
-        endGame(currentPlayer, targetPlayer);
-        return;
+      endGame(currentPlayer, targetPlayer);
+      return;
     }
 
     if (!targetPlayer.area.board[coord[0]][coord[1]].missed) {
@@ -135,7 +142,5 @@ addAllSpaceClickEvents();
 //place turns
 player1.area.place(new Ship(4), [0, 0], false);
 player2.area.place(new Ship(4), [4, 2], true);
-updateBoard(player1);
-updateBoard(player2);
 
 startTurn(player1);
