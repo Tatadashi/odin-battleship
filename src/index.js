@@ -79,7 +79,7 @@ function endGame(winner, loser) {
     loser.shootable = false;
 
     const button = document.getElementById('turn-button');
-    button.textContent = 'One More Game';
+    button.textContent = 'Play Again';
 }
 
 function shoot(targetPlayer, coord) {

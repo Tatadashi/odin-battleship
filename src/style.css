@@ -31,15 +31,23 @@ body {
   font-size: xx-large;
 }
 
-#turn-button-container {
-  display: flex;
-  justify-content: center;
+#menu-button {
+  position: fixed;
+  top: 5px;
+  left: 5px;
 }
 
+#menu-button,
 #turn-button {
+  padding-block: 5px;
   max-width: 100px;
   border-radius: 4px;
   background-color: bisque;
+}
+
+#turn-button-container {
+  display: flex;
+  justify-content: center;
 }
 
 #board-section {
