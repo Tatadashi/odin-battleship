@@ -33,6 +33,7 @@ class Space {
     this.occupied = false;
     this.shot = false;
     this.missed = null;
+    this.selected = false;
   }
 }
 
@@ -146,6 +147,7 @@ class Player {
     this.#name = name;
     this.#area = new GameBoard();
     this.shootable = false;
+    this.didAction = false;
   }
 
   get number() {

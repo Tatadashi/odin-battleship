@@ -102,6 +102,10 @@ body {
   border-left: black solid 2px;
 }
 
+.space.selected {
+  background-color: gold;
+}
+
 .space:hover {
   opacity: 30%;
   background-color: gold;
