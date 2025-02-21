@@ -1,12 +1,3 @@
-Pass turns
-	Temp color for To Be Hit
-	UpdateBoard(curr) to reflect this
-	Allow another click on other spaces but remove from last
-
-Computer Shoot(hasHit = false)
-	If (hasHit) Shoot Adjacent Spaces Unless none left
-	Random Attack until Valid
-
 Main Menu Modal (restrict input outside)
 	Choose Mode P v P, P v C, C v P, C v C
 	P has expanded fields for Name

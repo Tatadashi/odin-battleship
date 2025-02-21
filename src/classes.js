@@ -103,6 +103,8 @@ class GameBoard {
         if (this.#board[coord[0]][coord[1] + i].occupied) {
           return true;
         }
+        
+        return false
       }
 
       if (this.#board[coord[0] + i][coord[1]].occupied) {
@@ -148,6 +150,8 @@ class Player {
     this.#area = new GameBoard();
     this.shootable = false;
     this.didAction = false;
+    this.hasHit = false;
+    this.lastHitCoord = [];
   }
 
   get number() {
@@ -160,6 +164,10 @@ class Player {
 
   get area() {
     return this.#area;
+  }
+
+  get isComputer() {
+    return this.#isComputer;
   }
 }
 

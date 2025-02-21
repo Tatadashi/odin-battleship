@@ -69,15 +69,15 @@ function findOtherPlayer(currentPlayer) {
 function startTurn(player) {
   const announcement = document.getElementById("announcement");
   announcement.textContent = `${player.name}'s Turn`;
-
+  
   const turnButton = document.getElementById("turn-button");
   turnButton.style.backgroundColor = "lightgray";
-
+  
   const targetPlayer = findOtherPlayer(player);
   player.shootable = false;
   targetPlayer.shootable = true;
   player.didAction = false;
-
+  
   const currentPlayerOverlay = document.getElementById(
     `overlay-${player.number}`
   );
@@ -86,6 +86,10 @@ function startTurn(player) {
   );
   currentPlayerOverlay.style.visibility = "visible";
   targetPlayerOverlay.style.visibility = "hidden";
+
+  if (player.isComputer) {
+    computerShoot(targetPlayer);
+  }
 }
 
 function endGame(winner, loser) {
@@ -102,6 +106,82 @@ function endGame(winner, loser) {
   button.textContent = "Play Again";
 }
 
+function computerShoot(targetPlayer) {
+  const computer = findOtherPlayer(targetPlayer);
+  if (computer.hasHit || computer.lastHitCoord.length > 0) {
+    computerShootAdjacent(targetPlayer, computer.lastHitCoord[computer.lastHitCoord.length - 1]);
+    return;
+  }
+
+  let randomCoord = getRandomCoord();
+  while (targetPlayer.area.board[randomCoord[0]][randomCoord[1]].shot) {
+    randomCoord = getRandomCoord();
+  }
+  shoot(targetPlayer, randomCoord);
+}
+
+function getRandomCoord() {
+  const randomRow = Math.floor(Math.random() * 10);
+  const randomCol = Math.floor(Math.random() * 10);
+
+  return [randomRow, randomCol];
+}
+
+function computerShootAdjacent(targetPlayer, coord) {
+  if (!isOutOfBounds(coord, 'top')) {
+    if (!targetPlayer.area.board[coord[0] - 1][coord[1]].shot) {
+      shoot(targetPlayer, [coord[0] - 1, coord[1]]);
+      return;
+    }
+  }
+
+  if (!isOutOfBounds(coord, "left")) {
+    if (!targetPlayer.area.board[coord[0]][coord[1] - 1].shot) {
+      shoot(targetPlayer, [coord[0], coord[1] - 1]);
+      return;
+    }
+  }
+
+  if (!isOutOfBounds(coord, "bottom")) {
+    if (!targetPlayer.area.board[coord[0] + 1][coord[1]].shot) {
+      shoot(targetPlayer, [coord[0] + 1, coord[1]]);
+      return;
+    }
+  }
+
+  if (!isOutOfBounds(coord, "right")) {
+    if (!targetPlayer.area.board[coord[0]][coord[1] + 1].shot) {
+      shoot(targetPlayer, [coord[0], coord[1] + 1]);
+      return;
+    }
+  }
+
+  //no more adjacent spaces to shoot
+  const computer = findOtherPlayer(targetPlayer);
+  computer.lastHitCoord.pop();
+  computerShoot(targetPlayer);
+}
+
+function isOutOfBounds(coord, direction) {
+  let conclusion;
+  switch (direction) {
+    case 'top':
+      conclusion = coord[0] - 1 < 0 || coord[0] - 1 >= 10 ;
+      break;
+    case 'left':
+      conclusion = coord[1] - 1 < 0 || coord[1] - 1 >= 10;
+      break;
+    case 'bottom':
+      conclusion = coord[0] + 1 < 0 || coord[0] + 1 >= 10;
+      break;
+    case 'right':
+      conclusion = coord[1] + 1 < 0 || coord[1] + 1 >= 10;
+      break;
+  }
+
+  return conclusion;
+}
+
 function shoot(targetPlayer, coord) {
   const currentPlayer = findOtherPlayer(targetPlayer);
   targetPlayer.area.receiveAttack(coord);
@@ -113,8 +193,11 @@ function shoot(targetPlayer, coord) {
   }
 
   if (!targetPlayer.area.board[coord[0]][coord[1]].missed) {
+    currentPlayer.lastHitCoord.push(coord);
+    currentPlayer.hasHit = true;
     startTurn(currentPlayer);
   } else {
+    currentPlayer.hasHit = false;
     startTurn(targetPlayer);
   }
 }
@@ -185,8 +268,8 @@ function findCurrentPlayer() {
 }
 
 //initial setup
-const player1 = new Player(1, false, "Player 1");
-const player2 = new Player(2, false, "Player 2");
+const player1 = new Player(1, true, "Player 1");
+const player2 = new Player(2, true, "Player 2");
 const player1Title = document.getElementById("player-1");
 const player2Title = document.getElementById("player-2");
 player1Title.textContent = `${player1.name}`;
@@ -195,7 +278,7 @@ addAllSpaceClickEvents();
 addEndTurnClick();
 
 //place turns
-player1.area.place(new Ship(4), [0, 0], false);
-player2.area.place(new Ship(4), [4, 2], true);
+player1.area.place(new Ship(4), [4, 2], false);
+player2.area.place(new Ship(10), [0, 1], true);
 
 startTurn(player1);
