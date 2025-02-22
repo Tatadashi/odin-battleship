@@ -1,11 +1,19 @@
 body {
   background-color: darkseagreen;
   height: 100vh;
-  margin-block: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   gap: 5px;
+}
+
+dialog {
+  margin: auto;
+}
+
+dialog::backdrop {
+  background-color: blueviolet;
 }
 
 #title {
@@ -16,7 +24,8 @@ body {
 
 #top-section {
   display: flex;
-  justify-content: space-around;
+  position: relative;
+  justify-content: space-between;
 }
 
 .name {
@@ -24,11 +33,17 @@ body {
   font-style: italic;
   text-decoration: underline pink;
   text-underline-offset: 8px;
+  margin-inline: 20px;
 }
 
 #announcement {
   font-weight: bold;
   font-size: xx-large;
+  position: absolute;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #menu-button {
@@ -37,6 +52,7 @@ body {
   left: 5px;
 }
 
+#play-again-button,
 #menu-button,
 #turn-button {
   padding-block: 5px;

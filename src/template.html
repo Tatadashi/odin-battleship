@@ -5,6 +5,32 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
+    <dialog id="main-menu-modal" class="modal">
+      <form method="dialog" id="main-menu">
+        <div>
+          <h2>Battleship by Kenny Luu</h2>
+        </div>
+        <p>
+          <label for="mode-selection"></label>Choose mode:
+          <select id="mode-selection" name="mode">
+            <option value="PvP">Player vs Player</option>
+            <option value="PvC">Player vs Computer</option>
+            <option value="CvP">Computer vs Player</option>
+            <option value="CvC">Computer vs Computer</option>
+          </select>
+        </p>
+        <p id="player-1-input">
+          <label for="player-1-name"></label>Enter name for Player 1:
+          <input id="player-1-name" type="text" name="player-1-name" placeholder="Player 1">
+        </p>
+        </p>
+        <p id="player-2-input">
+          <label for="player-2-name"></label>Enter name for Player 2:
+          <input id="player-2-name" type="text" name="player-2-name" placeholder="Player 2">
+        </p>
+        <button type="submit" id="start-game-button">Start Game</button>
+      </form>
+    </dialog>
     <div id="title">Battleship</div>
     <button id="menu-button">Menu</button>
     <div id="top-section">
@@ -14,6 +40,7 @@
     </div>
     <div id="turn-button-container">
       <button id="turn-button">End Turn</button>
+      <button id="play-again-button">Play Again</button>
     </div>
     <div id="board-section">
       <div id="board-1" class="board">

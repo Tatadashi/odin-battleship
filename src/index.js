@@ -1,5 +1,5 @@
 import "./style.css";
-import { Player, Ship } from "./classes.js";
+import { Player, Ship } from "./otherJs/classes.js";
 
 function clearBoard(player) {
   const boardDiv = document.getElementById(`board-${player.number}`);
@@ -69,15 +69,17 @@ function findOtherPlayer(currentPlayer) {
 function startTurn(player) {
   const announcement = document.getElementById("announcement");
   announcement.textContent = `${player.name}'s Turn`;
-  
+
   const turnButton = document.getElementById("turn-button");
   turnButton.style.backgroundColor = "lightgray";
-  
+
   const targetPlayer = findOtherPlayer(player);
   player.shootable = false;
   targetPlayer.shootable = true;
   player.didAction = false;
-  
+  updateBoard(player);
+  clearBoard(targetPlayer);
+
   const currentPlayerOverlay = document.getElementById(
     `overlay-${player.number}`
   );
@@ -95,21 +97,27 @@ function startTurn(player) {
 function endGame(winner, loser) {
   const announcement = document.getElementById("announcement");
   announcement.textContent = `${winner.name} Wins!`;
-
+  
   const winnerOverlay = document.getElementById(`overlay-${winner.number}`);
   winnerOverlay.style.visibility = "hidden";
-
+  
   updateBoard(winner);
   loser.shootable = false;
+  
+  const turnButton = document.getElementById("turn-button");
+  turnButton.style.display = 'none';
 
-  const button = document.getElementById("turn-button");
-  button.textContent = "Play Again";
+  const playButton = document.getElementById("play-again-button");
+  playButton.style.display = "block";
 }
 
 function computerShoot(targetPlayer) {
   const computer = findOtherPlayer(targetPlayer);
   if (computer.hasHit || computer.lastHitCoord.length > 0) {
-    computerShootAdjacent(targetPlayer, computer.lastHitCoord[computer.lastHitCoord.length - 1]);
+    computerShootAdjacent(
+      targetPlayer,
+      computer.lastHitCoord[computer.lastHitCoord.length - 1]
+    );
     return;
   }
 
@@ -128,7 +136,7 @@ function getRandomCoord() {
 }
 
 function computerShootAdjacent(targetPlayer, coord) {
-  if (!isOutOfBounds(coord, 'top')) {
+  if (!isOutOfBounds(coord, "top")) {
     if (!targetPlayer.area.board[coord[0] - 1][coord[1]].shot) {
       shoot(targetPlayer, [coord[0] - 1, coord[1]]);
       return;
@@ -165,16 +173,16 @@ function computerShootAdjacent(targetPlayer, coord) {
 function isOutOfBounds(coord, direction) {
   let conclusion;
   switch (direction) {
-    case 'top':
-      conclusion = coord[0] - 1 < 0 || coord[0] - 1 >= 10 ;
+    case "top":
+      conclusion = coord[0] - 1 < 0 || coord[0] - 1 >= 10;
       break;
-    case 'left':
+    case "left":
       conclusion = coord[1] - 1 < 0 || coord[1] - 1 >= 10;
       break;
-    case 'bottom':
+    case "bottom":
       conclusion = coord[0] + 1 < 0 || coord[0] + 1 >= 10;
       break;
-    case 'right':
+    case "right":
       conclusion = coord[1] + 1 < 0 || coord[1] + 1 >= 10;
       break;
   }
@@ -191,7 +199,7 @@ function shoot(targetPlayer, coord) {
     endGame(currentPlayer, targetPlayer);
     return;
   }
-
+  
   if (!targetPlayer.area.board[coord[0]][coord[1]].missed) {
     currentPlayer.lastHitCoord.push(coord);
     currentPlayer.hasHit = true;
@@ -253,7 +261,8 @@ function addEndTurnClick() {
 
   turnButton.addEventListener("click", (e) => {
     const currentPlayer = findCurrentPlayer();
-    if (currentPlayer.didAction) {
+    const targetPlayer = findOtherPlayer(currentPlayer)
+    if (currentPlayer.didAction && targetPlayer.area.hasShips()) {
       endTurn(currentPlayer);
     }
   });
@@ -267,18 +276,155 @@ function findCurrentPlayer() {
   }
 }
 
+function restartGame() {
+  player1.reset();
+  player2.reset();
+  clearBoard(player1);
+  clearBoard(player2);
+  const boardDiv1 = document.getElementById(`board-1`);
+  const boardDiv2 = document.getElementById(`board-2`);
+
+  for (let row = 0; row < 10; row++) {
+    for (let col = 0; col < 10; col++) {
+      boardDiv1.children[row].children[col].classList.remove("miss");
+      boardDiv1.children[row].children[col].classList.remove("hit");
+      boardDiv2.children[row].children[col].classList.remove("miss");
+      boardDiv2.children[row].children[col].classList.remove("hit");
+    }
+  }
+
+  startGame();
+}
+
+function startGame() {
+  const player1Title = document.getElementById("player-1");
+  const player2Title = document.getElementById("player-2");
+  player1Title.textContent = `${player1.name}`;
+  player2Title.textContent = `${player2.name}`;
+
+  addAllSpaceClickEvents();
+  addEndTurnClick();
+
+  const turnButton = document.getElementById("turn-button");
+  turnButton.style.display = "block";
+  const playButton = document.getElementById("play-again-button");
+  playButton.style.display = "none";
+
+  //place turns
+  player1.area.place(new Ship(4), [4, 2], false);
+  player2.area.place(new Ship(3), [0, 1], true);
+
+  startTurn(player1);
+}
+
+function addPlayAgainButtonFunctionality() {
+  const playButton = document.getElementById('play-again-button');
+  playButton.addEventListener('click', (e) => {
+    restartGame();
+  });
+}
+
+function addDynamicPlayerNameInputForm() {
+  const modeSelection = document.getElementById("mode-selection");
+  modeSelection.addEventListener("change", (e) => {
+    const player1Input = document.getElementById("player-1-input");
+    const player2Input = document.getElementById("player-2-input");
+    switch (modeSelection.value) {
+      case "PvP":
+        player1Input.style.display = "block";
+        player2Input.style.display = "block";
+        break;
+      case "PvC":
+        player1Input.style.display = "block";
+        player2Input.style.display = "none";
+        break;
+      case "CvP":
+        player1Input.style.display = "none";
+        player2Input.style.display = "block";
+        break;
+      case "CvC":
+        player1Input.style.display = "none";
+        player2Input.style.display = "none";
+        break;
+    }
+  });
+}
+
+function addStartButtonFunctionality() {
+  const startButton = document.getElementById('start-game-button');
+  startButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    const form = document.getElementById('main-menu')
+    submitStartGameForm(form);
+  });
+}
+
+function submitStartGameForm(form) {  
+  const formData = new FormData(form)
+  const player1Name = formData.get('player-1-name');
+  const player2Name = formData.get("player-2-name");
+  const player1Input = document.getElementById('player-1-name');
+  const player2Input = document.getElementById('player-2-name');
+  const isP1Computer = checkIfComputerWithForm(player1Input, formData)
+  const isP2Computer = checkIfComputerWithForm(player2Input, formData);
+  createPlayers(player1Name, player2Name, isP1Computer, isP2Computer);
+
+  const mainMenu = document.getElementById("main-menu-modal");
+  mainMenu.close();
+  startGame();
+}
+
+function createPlayers(name1, name2, isComputer1, isComputer2) {
+  if (name1 == '') {
+    name1 = 'Player 1';
+  }
+
+  if (name2 == '') {
+    name2 = 'Player 2';
+  }
+
+  if (isComputer1) {
+    player1 = new Player(1, true);
+  } else {
+    player1 = new Player(1, false, `${name1}`);
+  }
+
+  if (isComputer2) {
+    player2 = new Player(2, true);
+  } else {
+    player2 = new Player(2, false, `${name2}`);
+  }
+}
+
+function checkIfComputerWithForm(player, formData) {
+  const mode = formData.get('mode');
+  const player1Input = document.getElementById("player-1-name");
+  const player2Input = document.getElementById("player-2-name");
+
+  switch (mode) {
+    case "PvP":
+      return false;
+    case "PvC":
+      if (player === player1Input) {
+        return false;
+      }
+      return true;
+    case "CvP":
+      if (player === player2Input) {
+        return false;
+      }
+      return true;
+    case "CvC":
+      return true;
+  }
+}
+
 //initial setup
-const player1 = new Player(1, true, "Player 1");
-const player2 = new Player(2, true, "Player 2");
-const player1Title = document.getElementById("player-1");
-const player2Title = document.getElementById("player-2");
-player1Title.textContent = `${player1.name}`;
-player2Title.textContent = `${player2.name}`;
-addAllSpaceClickEvents();
-addEndTurnClick();
+let player1;
+let player2;
+addDynamicPlayerNameInputForm();
+addStartButtonFunctionality();
+addPlayAgainButtonFunctionality();
 
-//place turns
-player1.area.place(new Ship(4), [4, 2], false);
-player2.area.place(new Ship(10), [0, 1], true);
-
-startTurn(player1);
+const mainMenu = document.getElementById("main-menu-modal");
+mainMenu.showModal();

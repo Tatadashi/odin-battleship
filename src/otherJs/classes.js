@@ -143,7 +143,7 @@ class Player {
   #name;
   #area;
   #number;
-  constructor(number, isComputer, name = "Computer") {
+  constructor(number, isComputer, name = `Computer ${number}`) {
     this.#number = number;
     this.#isComputer = isComputer;
     this.#name = name;
@@ -168,6 +168,14 @@ class Player {
 
   get isComputer() {
     return this.#isComputer;
+  }
+
+  reset() {
+    this.#area = new GameBoard();
+    this.shootable = false;
+    this.didAction = false;
+    this.hasHit = false;
+    this.lastHitCoord = [];
   }
 }
 

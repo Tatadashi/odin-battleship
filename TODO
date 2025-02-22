@@ -1,7 +1,9 @@
-Main Menu Modal (restrict input outside)
-	Choose Mode P v P, P v C, C v P, C v C
-	P has expanded fields for Name
-	Start Game button
+Bug where from 2nd win onwards, doesn't show both boards or announce win (but changes button)
+	computer seemingly not affected
+	bug not occur if computer goes first on restart
+
+go from don't have ships to have ships fast
+	bug when player goes first on retart
 
 Menu Button Modal (restrict input outside)
 	Restart Game button
