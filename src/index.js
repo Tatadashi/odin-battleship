@@ -322,6 +322,24 @@ function startGame() {
   startTurn(player1);
 }
 
+function disableMostEscModal() {
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const menuModal = document.getElementById("menu-modal");
+      menuModal.close();
+      e.preventDefault();
+    }
+  });
+}
+
+function addCloseButtonFunctionality() {
+  const menuModal = document.getElementById('menu-modal');
+  const closeButton = document.getElementById('close');
+  closeButton.addEventListener('click', (e) => {
+    menuModal.close();
+  });
+}
+
 function addRestartButtonFunctionality() {
   const menu = document.getElementById("menu-modal");
   menu.close(); 
@@ -384,6 +402,15 @@ function addStartButtonFunctionality() {
     const form = document.getElementById('main-menu')
     submitStartGameForm(form);
   });
+}
+
+function addAllButtonFunctionality() {
+  addStartButtonFunctionality();
+  addRestartButtonFunctionality();
+  addMenuButtonFunctionality();
+  addRestartButtonFunctionality();
+  addReturnButtonFunctonality();  
+  addCloseButtonFunctionality();
 }
 
 function submitStartGameForm(form) {  
@@ -450,11 +477,8 @@ function checkIfComputerWithForm(player, formData) {
 let player1;
 let player2;
 addDynamicPlayerNameInputForm();
-addStartButtonFunctionality();
-addRestartButtonFunctionality();
-addMenuButtonFunctionality();
-addRestartButtonFunctionality();
-addReturnButtonFunctonality();
+disableMostEscModal();
+addAllButtonFunctionality();
 
 const mainMenu = document.getElementById("main-menu-modal");
 mainMenu.showModal();
