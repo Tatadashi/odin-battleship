@@ -12,8 +12,25 @@ dialog {
   margin: auto;
 }
 
-dialog::backdrop {
+#main-menu-modal::backdrop {
   background-color: blueviolet;
+}
+
+#menu-modal {
+  padding-inline: 10px;
+  margin-top: 20vh;
+}
+
+#menu {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding-inline: 30px;
+}
+
+#close {
+  position: absolute;
+  right: 5px;
 }
 
 #title {
@@ -52,7 +69,7 @@ dialog::backdrop {
   left: 5px;
 }
 
-#play-again-button,
+#restart-button,
 #menu-button,
 #turn-button {
   padding-block: 5px;

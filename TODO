@@ -1,15 +1,3 @@
-Bug where from 2nd win onwards, doesn't show both boards or announce win (but changes button)
-	computer seemingly not affected
-	bug not occur if computer goes first on restart
-
-go from don't have ships to have ships fast
-	bug when player goes first on retart
-
-Menu Button Modal (restrict input outside)
-	Restart Game button
-	Exit to Main Menu Modal button
-	Top Right X to get out of Modal
-
 Coin Flip to see who goes first (prob a modal)
 	Choose random player to pick Heads/Tails (and show msg indicating who)
 	Player who is right gets to choose 1st or 2nd (show msg too)

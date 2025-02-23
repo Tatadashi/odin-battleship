@@ -107,8 +107,9 @@ function endGame(winner, loser) {
   const turnButton = document.getElementById("turn-button");
   turnButton.style.display = 'none';
 
-  const playButton = document.getElementById("play-again-button");
-  playButton.style.display = "block";
+  const turnButtonContainer = document.getElementById('turn-button-container');
+  const restartButton = turnButtonContainer.querySelector(".restart-button");
+  restartButton.style.display = "block";
 }
 
 function computerShoot(targetPlayer) {
@@ -276,14 +277,14 @@ function findCurrentPlayer() {
   }
 }
 
-function restartGame() {
+function clearGame() {
   player1.reset();
   player2.reset();
   clearBoard(player1);
   clearBoard(player2);
   const boardDiv1 = document.getElementById(`board-1`);
   const boardDiv2 = document.getElementById(`board-2`);
-
+  
   for (let row = 0; row < 10; row++) {
     for (let col = 0; col < 10; col++) {
       boardDiv1.children[row].children[col].classList.remove("miss");
@@ -292,7 +293,10 @@ function restartGame() {
       boardDiv2.children[row].children[col].classList.remove("hit");
     }
   }
+}
 
+function restartGame() {
+  clearGame();
   startGame();
 }
 
@@ -307,8 +311,9 @@ function startGame() {
 
   const turnButton = document.getElementById("turn-button");
   turnButton.style.display = "block";
-  const playButton = document.getElementById("play-again-button");
-  playButton.style.display = "none";
+  const turnButtonContainer = document.getElementById("turn-button-container");
+  const restartButton = turnButtonContainer.querySelector(".restart-button");
+  restartButton.style.display = "none";
 
   //place turns
   player1.area.place(new Ship(4), [4, 2], false);
@@ -317,10 +322,32 @@ function startGame() {
   startTurn(player1);
 }
 
-function addPlayAgainButtonFunctionality() {
-  const playButton = document.getElementById('play-again-button');
-  playButton.addEventListener('click', (e) => {
-    restartGame();
+function addRestartButtonFunctionality() {
+  const menu = document.getElementById("menu-modal");
+  menu.close(); 
+
+  const restartButtons = document.querySelectorAll('.restart-button');
+  restartButtons.forEach(button => {
+    button.addEventListener("click", (e) => {
+      restartGame();
+    });
+  });
+}
+
+function addMenuButtonFunctionality() {
+  const menuButton = document.getElementById('menu-button')
+  menuButton.addEventListener('click', (e) => {
+    const menu = document.getElementById('menu-modal');
+    menu.showModal();
+  });
+}
+
+function addReturnButtonFunctonality() {
+  const returnButton = document.getElementById('return-home-button');
+  returnButton.addEventListener('click', (e) => {
+    const mainMenu = document.getElementById('main-menu-modal');
+    mainMenu.showModal();
+    clearGame();
   });
 }
 
@@ -424,7 +451,10 @@ let player1;
 let player2;
 addDynamicPlayerNameInputForm();
 addStartButtonFunctionality();
-addPlayAgainButtonFunctionality();
+addRestartButtonFunctionality();
+addMenuButtonFunctionality();
+addRestartButtonFunctionality();
+addReturnButtonFunctonality();
 
 const mainMenu = document.getElementById("main-menu-modal");
 mainMenu.showModal();
