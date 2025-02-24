@@ -1,7 +1,3 @@
-Coin Flip to see who goes first (prob a modal)
-	Choose random player to pick Heads/Tails (and show msg indicating who)
-	Player who is right gets to choose 1st or 2nd (show msg too)
-
 Place Ship Phase
 	Allow in Turn Order to Drag and Drop ships
 	(have to prob adjust size a bit)

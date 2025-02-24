@@ -22,6 +22,15 @@ function createPlayers(name1, name2, isComputer1, isComputer2) {
   }
 }
 
+function chooseRandomPlayer() {
+  const randomNumber = Math.floor(Math.random() * 2) + 1;
+  const player = randomNumber === 1 ? player1 : player2;
+  const coinChooser = document.getElementById("coin-chooser");
+  coinChooser.textContent = `Player: ${player.name}`;
+
+  return player;
+}
+
 function findCurrentPlayer() {
   if (player1.shootable) {
     return player2;
@@ -42,4 +51,11 @@ function findOtherPlayer(currentPlayer) {
 let player1;
 let player2;
 
-export { createPlayers, findCurrentPlayer, findOtherPlayer, player1, player2 };
+export {
+  createPlayers,
+  chooseRandomPlayer,
+  findCurrentPlayer,
+  findOtherPlayer,
+  player1,
+  player2,
+};

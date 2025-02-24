@@ -1,4 +1,5 @@
-import { startGame, restartGame } from "./game.js";
+import { openCoinFlipModal } from "./modal.js";
+import { clearGame } from "./game.js";
 import { createPlayers } from "./player.js";
 
 function submitStartGameForm(form) {
@@ -13,7 +14,7 @@ function submitStartGameForm(form) {
 
   const mainMenu = document.getElementById("main-menu-modal");
   mainMenu.close();
-  startGame();
+  openCoinFlipModal();
 }
 
 function addStartButtonFunctionality() {
@@ -34,6 +35,20 @@ function addRestartButtonFunctionality() {
     button.addEventListener("click", (e) => {
       restartGame();
     });
+  });
+}
+
+function restartGame() {
+  clearGame();
+  openCoinFlipModal();
+}
+
+function addReturnButtonFunctonality() {
+  const returnButton = document.getElementById("return-home-button");
+  returnButton.addEventListener("click", (e) => {
+    const mainMenu = document.getElementById("main-menu-modal");
+    mainMenu.showModal();
+    clearGame();
   });
 }
 
@@ -87,7 +102,8 @@ function checkIfComputerWithForm(player, formData) {
 }
 
 export {
-  addRestartButtonFunctionality,
   addStartButtonFunctionality,
+  addRestartButtonFunctionality,
+  addReturnButtonFunctonality,
   addDynamicPlayerNameInputForm,
 };

@@ -163,7 +163,7 @@ function addEndTurnClick() {
   });
 }
 
-function startGame() {
+function startGame(firstPlayer) {
   const player1Title = document.getElementById("player-1");
   const player2Title = document.getElementById("player-2");
   player1Title.textContent = `${player1.name}`;
@@ -182,12 +182,7 @@ function startGame() {
   player1.area.place(new Ship(4), [4, 2], false);
   player2.area.place(new Ship(3), [0, 1], true);
 
-  startTurn(player1);
+  startTurn(firstPlayer);
 }
 
-function restartGame() {
-  clearGame();
-  startGame();
-}
-
-export { clearGame, startGame, restartGame };
+export { clearGame, startGame };
