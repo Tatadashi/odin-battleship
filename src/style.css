@@ -154,7 +154,7 @@ dialog {
   background-color: gold;
 }
 
-.space:hover {
+.space.hoverable:hover {
   opacity: 30%;
   background-color: gold;
   cursor: pointer;
@@ -192,4 +192,36 @@ dialog {
 #border {
   border-inline: orangered solid 5px;
   height: 100%;
+}
+
+#ships-container {
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+#ships-container,
+#carrier,
+#battleship,
+#destroyer,
+#submarine,
+#patrol-boat {
+  display: flex;
+}
+
+#carrier:hover,
+#battleship:hover,
+#destroyer:hover,
+#submarine:hover,
+#patrol-boat:hover {
+  opacity: 30%;
+  cursor: grab;
+}
+
+#carrier .ship:hover,
+#battleship .ship:hover,
+#destroyer .ship:hover,
+#submarine .ship:hover,
+#patrol-boat .ship:hover {
+  pointer-events: none;
+  opacity: 100%;
 }

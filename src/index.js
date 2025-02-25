@@ -25,4 +25,4 @@ addDynamicPlayerNameInputForm();
 disableMostEscModal();
 
 const mainMenu = document.getElementById("main-menu-modal");
-mainMenu.showModal();
+// mainMenu.showModal();

@@ -15,6 +15,7 @@ function addAllSpaceClickEvents() {
 
 function addSpaceClick(targetPlayer, space, coord) {
   const currentPlayer = findOtherPlayer(targetPlayer);
+  space.classList.add("hoverable");
   space.addEventListener("click", (e) => {
     if (
       targetPlayer.shootable &&
@@ -22,7 +23,7 @@ function addSpaceClick(targetPlayer, space, coord) {
     ) {
       const turnButton = document.getElementById("turn-button");
       turnButton.style.backgroundColor = "bisque";
-
+    
       currentPlayer.didAction = true;
       clearBoard(targetPlayer);
       targetPlayer.area.board[coord[0]][coord[1]].selected = true;
