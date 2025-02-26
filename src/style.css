@@ -195,17 +195,39 @@ dialog {
 }
 
 #ships-container {
+  display: flex;
   justify-content: space-around;
-  margin-bottom: 10px;
+  position: relative;
+  margin-bottom: 10vh;
 }
 
-#ships-container,
 #carrier,
 #battleship,
 #destroyer,
 #submarine,
 #patrol-boat {
   display: flex;
+  position: absolute;
+}
+
+#carrier {
+  left: 5vw;
+}
+
+#battleship {
+  left: 30vw;
+}
+
+#destroyer {
+  left: 55vw;
+}
+
+#submarine {
+  left: 72vw;
+}
+
+#patrol-boat {
+  left: 90vw;
 }
 
 #carrier:hover,
@@ -213,15 +235,6 @@ dialog {
 #destroyer:hover,
 #submarine:hover,
 #patrol-boat:hover {
-  opacity: 30%;
-  cursor: grab;
-}
-
-#carrier .ship:hover,
-#battleship .ship:hover,
-#destroyer .ship:hover,
-#submarine .ship:hover,
-#patrol-boat .ship:hover {
-  pointer-events: none;
-  opacity: 100%;
+  opacity: 60%;
+  cursor: move;
 }

@@ -23,7 +23,7 @@ function addSpaceClick(targetPlayer, space, coord) {
     ) {
       const turnButton = document.getElementById("turn-button");
       turnButton.style.backgroundColor = "bisque";
-    
+
       currentPlayer.didAction = true;
       clearBoard(targetPlayer);
       targetPlayer.area.board[coord[0]][coord[1]].selected = true;
@@ -79,4 +79,40 @@ function clearBoard(player) {
   }
 }
 
-export { addAllSpaceClickEvents, updateBoard, clearBoard };
+function addDragShip(shipDiv) {
+  let offsetX, offsetY;
+  const move = (e) => {
+    shipDiv.style.left = `${e.clientX - offsetX}px`;
+    shipDiv.style.top = `${e.clientY - offsetY}px`;
+    shipDiv.style.zIndex = 1;
+  };
+
+  shipDiv.addEventListener("mousedown", (e) => {
+    //want offset from shipDiv and clientX, not targetNode (space) and clientX
+    offsetX = e.clientX - shipDiv.offsetLeft;
+    offsetY = e.clientY - shipDiv.offsetTop;
+    shipDiv.style.border = "5px solid red";
+    window.addEventListener("mousemove", move);
+  });
+
+  shipDiv.addEventListener("mouseup", (e) => {
+    window.removeEventListener("mousemove", move);
+    shipDiv.style.removeProperty("z-index");
+    shipDiv.style.removeProperty("border");
+  });
+}
+
+function addDragAllShips() {
+  const carrier = document.getElementById("carrier");
+  const battleship = document.getElementById("battleship");
+  const destroyer = document.getElementById("destroyer");
+  const submarine = document.getElementById("submarine");
+  const patrolBoat = document.getElementById("patrol-boat");
+  addDragShip(carrier);
+  addDragShip(battleship);
+  addDragShip(destroyer);
+  addDragShip(submarine);
+  addDragShip(patrolBoat);
+}
+
+export { addAllSpaceClickEvents, updateBoard, clearBoard, addDragAllShips };
