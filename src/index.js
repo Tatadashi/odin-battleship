@@ -24,7 +24,10 @@ function addAllButtonFunctionality() {
 addAllButtonFunctionality();
 addDynamicPlayerNameInputForm();
 disableMostEscModal();
-addDragAllShips();
+
+//temp since have to removeEventListener during phase change 
+const board1 = document.getElementById('board-1');
+addDragAllShips(board1);
 
 const mainMenu = document.getElementById("main-menu-modal");
-mainMenu.showModal();
+// mainMenu.showModal();

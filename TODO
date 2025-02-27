@@ -1,3 +1,5 @@
+todo: 
+
 Place ships places on board object
 	return to og if not allowed on space (occupied/not fit)
 Allow ship rotations when first clicking
