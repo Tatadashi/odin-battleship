@@ -66,7 +66,7 @@ class GameBoard {
   place(ship, coord, isVertical, shipName) {
     if (
       this.hasRoom(ship, coord, isVertical) &&
-      !this.isOccupied(ship, coord, isVertical)
+      !this.isOccupied(ship, coord, isVertical, shipName)
     ) {
       if (this.doesShipExistOnBoard(shipName)) {
         this.removeShip(shipName);
@@ -83,6 +83,7 @@ class GameBoard {
       }
 
       this.#shipCount++;
+      return true;
     }
 
     return false;
@@ -97,7 +98,7 @@ class GameBoard {
         }
       }
     }
-    
+
     return false;
   }
   removeShip(shipName) {
@@ -130,20 +131,23 @@ class GameBoard {
   isOccupied(ship, coord, isVertical, shipName) {
     for (let i = 0; i < ship.length; i++) {
       if (isVertical) {
-        if (
-          this.#board[coord[0]][coord[1] + i].occupied &&
-          this.#board[coord[0]][coord[1] + i].occupant.name != shipName
-        ) {
+        if (this.#board[coord[0] + i][coord[1]].occupied) {
+          if (this.#board[coord[0] + i][coord[1]].occupant.name === shipName) {
+            return false;
+          }
+          console.log('a')
+
           return true;
         }
-        
-        return false
+
+        return false;
       }
 
-      if (
-        this.#board[coord[0]][coord[1] + i].occupied &&
-        this.#board[coord[0]][coord[1] + i].occupant.name != shipName
-      ) {
+      if (this.#board[coord[0]][coord[1] + i].occupied) {
+        if (this.#board[coord[0]][coord[1] + i].occupant.name === shipName) {
+          return false;
+        }
+
         return true;
       }
     }

@@ -1,5 +1,4 @@
-todo: 
+todo:
 
-Place ships places on board object
-	return to og if not allowed on space (occupied/not fit)
+Turn Phase
 Allow ship rotations when first clicking

@@ -4,8 +4,6 @@ import {
   player1,
   player2,
   findCurrentPlayer,
-  //delete
-  createPlayers
 } from "./player.js";
 import { getRandomCoord, isOutOfBounds } from "./coords.js";
 import { findSelected } from "./findClass.js";
@@ -185,13 +183,5 @@ function startGame(firstPlayer) {
 
   startTurn(firstPlayer);
 }
-
-createPlayers('player1Name', 'player2Name', false, false);
-const carrier = document.getElementById('carrier');
-const carrierId = carrier.getAttribute('id');
-player1.area.place(new Ship(5, carrierId), [4, 2], false, carrierId);
-player1.area.place(new Ship(5, carrierId), [0, 0], false, carrierId);
-player1.area.place(new Ship(5, carrierId), [9, 4], false, carrierId);
-updateBoard(player1)
 
 export { clearGame, startGame };
