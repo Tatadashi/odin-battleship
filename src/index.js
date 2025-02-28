@@ -9,7 +9,6 @@ import {
   addMenuButtonFunctionality,
   disableMostEscModal,
 } from "./otherJs/modal.js";
-import { addDragAllShips } from "./otherJs/dragShips.js";
 import "./style.css";
 
 function addAllButtonFunctionality() {
@@ -26,4 +25,4 @@ addDynamicPlayerNameInputForm();
 disableMostEscModal();
 
 const mainMenu = document.getElementById("main-menu-modal");
-// mainMenu.showModal();
+mainMenu.showModal();

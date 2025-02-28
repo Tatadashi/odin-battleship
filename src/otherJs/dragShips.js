@@ -1,4 +1,3 @@
-import { player1, createPlayers } from "./player";
 import { updateBoard, clearBoard } from "./boardDOM";
 import { Ship } from "./classes";
 
@@ -33,40 +32,50 @@ function addDragShip(shipDiv, boardDiv, player) {
       shipDiv.style.top,
       boardDiv,
       player
-    ); 
+    );
     shipDiv.style.top = `${topEdgeAndIndex[0]}px`;
-    
+
     const leftEdgeAndIndex = findNearestXSpaceEdge(
       shipDiv.style.left,
       boardDiv,
       player
-    ); 
+    );
     shipDiv.style.left = `${leftEdgeAndIndex[0]}px`;
 
-    const shipName = shipDiv.getAttribute('id');
+    const shipName = shipDiv.getAttribute("id");
     const shipLength = returnShipLengthBasedOnName(shipName);
     const coords = [topEdgeAndIndex[1], leftEdgeAndIndex[1]];
-    const isPlaced = player.area.place(new Ship(shipLength, shipName), coords, false, shipName);
+    const isPlaced = player.area.place(
+      new Ship(shipLength, shipName),
+      coords,
+      false,
+      shipName
+    );
     if (!isPlaced) {
       shipDiv.style.top = `${ogOffsetY}px`;
       shipDiv.style.left = `${ogOffsetX}px`;
     }
     clearBoard(player);
     updateBoard(player);
+
+    if (player.area.shipCount === 5) {
+      const placeButton = document.getElementById("place-button");
+      placeButton.style.backgroundColor = "bisque";
+    }
   });
 }
 
 function returnShipLengthBasedOnName(shipName) {
   switch (shipName) {
-    case 'carrier':
+    case "carrier":
       return 5;
-    case 'battleship':
+    case "battleship":
       return 4;
-    case 'destroyer':
-      return 4;
-    case 'submarine':
+    case "destroyer":
       return 3;
-    case 'patrol-boat':
+    case "submarine":
+      return 3;
+    case "patrol-boat":
       return 2;
   }
 }
@@ -174,8 +183,44 @@ function addDragAllShips(boardDiv, player) {
   addDragShip(patrolBoat, boardDiv, player);
 }
 
-createPlayers('player1Name', 'player2Name', false, false);
-const boardDiv = document.getElementById(`board-${player1.number}`);
-addDragAllShips(boardDiv, player1);
+function removeAllShips() {
+  const carrier = document.getElementById("carrier");
+  const battleship = document.getElementById("battleship");
+  const destroyer = document.getElementById("destroyer");
+  const submarine = document.getElementById("submarine");
+  const patrolBoat = document.getElementById("patrol-boat");
+  carrier.style.display = "none";
+  battleship.style.display = "none";
+  destroyer.style.display = "none";
+  submarine.style.display = "none";
+  patrolBoat.style.display = "none";
+}
 
-export { addDragAllShips };
+function resetShipPositions() {
+  const carrier = document.getElementById("carrier");
+  const battleship = document.getElementById("battleship");
+  const destroyer = document.getElementById("destroyer");
+  const submarine = document.getElementById("submarine");
+  const patrolBoat = document.getElementById("patrol-boat");
+  carrier.style.left = "5vw";
+  battleship.style.left = "30vw";
+  destroyer.style.left = "55vw";
+  submarine.style.left = "72vw";
+  patrolBoat.style.left = "90vw";
+
+  //empty since it was initially empty and not 0px (top/bot changes ship size)
+  const ships = document.getElementById("ships-container");
+  ships.style.position = "relative";
+  carrier.style.top = "";
+  battleship.style.top = "";
+  destroyer.style.top = "";
+  submarine.style.top = "";
+  patrolBoat.style.top = "";
+}
+
+export {
+  addDragAllShips,
+  removeAllShips,
+  resetShipPositions,
+  returnShipLengthBasedOnName,
+};

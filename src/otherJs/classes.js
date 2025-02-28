@@ -52,6 +52,10 @@ class GameBoard {
     return this.#board;
   }
 
+  get shipCount() {
+    return this.#shipCount;
+  }
+
   createBoard(boardSize) {
     let arr = new Array(boardSize);
     for (let i = 0; i < arr.length; i++) {
@@ -102,6 +106,7 @@ class GameBoard {
     return false;
   }
   removeShip(shipName) {
+    this.#shipCount--;
     for (let row = 0; row < 10; row++) {
       for (let col = 0; col < 10; col++) {
         if (this.#board[row][col].occupied) {
@@ -135,7 +140,7 @@ class GameBoard {
           if (this.#board[coord[0] + i][coord[1]].occupant.name === shipName) {
             return false;
           }
-          console.log('a')
+          console.log("a");
 
           return true;
         }

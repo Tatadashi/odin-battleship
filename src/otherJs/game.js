@@ -7,6 +7,12 @@ import {
 } from "./player.js";
 import { getRandomCoord, isOutOfBounds } from "./coords.js";
 import { findSelected } from "./findClass.js";
+import {
+  addDragAllShips,
+  removeAllShips,
+  resetShipPositions,
+  returnShipLengthBasedOnName,
+} from "./dragShips.js";
 import { Ship } from "./classes.js";
 
 function startTurn(player) {
@@ -22,24 +28,33 @@ function startTurn(player) {
   player.didAction = false;
   updateBoard(player);
   clearBoard(targetPlayer);
-
-  const currentPlayerOverlay = document.getElementById(
-    `overlay-${player.number}`
-  );
-  const targetPlayerOverlay = document.getElementById(
-    `overlay-${targetPlayer.number}`
-  );
-  currentPlayerOverlay.style.visibility = "visible";
-  targetPlayerOverlay.style.visibility = "hidden";
+  showAndHideOverlay(player, targetPlayer);
 
   if (player.isComputer) {
     computerShoot(targetPlayer);
   }
 }
 
+function showAndHideOverlay(currentPlayer, targetPlayer) {
+  const currentPlayerOverlay = document.getElementById(
+    `overlay-${currentPlayer.number}`
+  );
+  const targetPlayerOverlay = document.getElementById(
+    `overlay-${targetPlayer.number}`
+  );
+  currentPlayerOverlay.style.visibility = "visible";
+  targetPlayerOverlay.style.visibility = "hidden";
+}
+
 function computerShoot(targetPlayer) {
   const computer = findOtherPlayer(targetPlayer);
   if (computer.hasHit || computer.lastHitCoord.length > 0) {
+    //idk what the problem cause is, so hardcoded solution
+    if (computer.lastHitCoord.length > 0 == false) {
+      computer.hasHit = false;
+      startTurn(targetPlayer);
+      return;
+    }
     computerShootAdjacent(
       targetPlayer,
       computer.lastHitCoord[computer.lastHitCoord.length - 1]
@@ -169,19 +184,110 @@ function startGame(firstPlayer) {
   player1Title.textContent = `${player1.name}`;
   player2Title.textContent = `${player2.name}`;
 
-  addAllSpaceClickEvents();
-  addEndTurnClick();
-
   const turnButton = document.getElementById("turn-button");
-  turnButton.style.display = "block";
+  turnButton.style.display = "none";
   const turnButtonContainer = document.getElementById("turn-button-container");
   const restartButton = turnButtonContainer.querySelector(".restart-button");
   restartButton.style.display = "none";
 
-  //place turns
-  player2.area.place(new Ship(3), [0, 1], true);
+  addPlaceTurnClick();
+  placeTurn(firstPlayer);
+}
 
-  startTurn(firstPlayer);
+function placeTurn(player) {
+  if (player.isComputer) {
+    computerRandomPlaceAll(player);
+
+    const otherPlayer = findOtherPlayer(player);
+    if (otherPlayer.area.shipCount === 5) {
+      const turnButton = document.getElementById("turn-button");
+      turnButton.style.display = "block";
+      const placeButton = document.getElementById("place-button");
+      placeButton.style.display = "none";
+      addAllSpaceClickEvents();
+      addEndTurnClick();
+      removeAllShips();
+      startTurn(otherPlayer);
+      return;
+    }
+
+    clearBoard(player);
+    placeTurn(otherPlayer);
+    return;
+  }
+
+  const announcement = document.getElementById("announcement");
+  announcement.textContent = `${player.name}'s Turn`;
+
+  const placeButton = document.getElementById("place-button");
+  placeButton.style.backgroundColor = "lightgray";
+
+  const boardDiv = document.getElementById(`board-${player.number}`);
+  addDragAllShips(boardDiv, player);
+
+  const otherPlayer = findOtherPlayer(player);
+  showAndHideOverlay(otherPlayer, player);
+
+  //getCurrent checks which player is shootable
+  player.shootable = false;
+  otherPlayer.shootable = true;
+}
+
+function computerRandomPlaceAll(computer) {
+  computerRandomPlace(computer, "carrier");
+  computerRandomPlace(computer, "battleship");
+  computerRandomPlace(computer, "destroyer");
+  computerRandomPlace(computer, "submarine");
+  computerRandomPlace(computer, "patrol-boat");
+}
+
+function computerRandomPlace(computer, shipName) {
+  const shipLength = returnShipLengthBasedOnName(shipName);
+  let randomCoord = getRandomCoord();
+  let hasPlaced = computer.area.place(
+    new Ship(shipLength, shipName),
+    randomCoord,
+    false,
+    shipName
+  );
+
+  while (!hasPlaced) {
+    randomCoord = getRandomCoord();
+    hasPlaced = computer.area.place(
+      new Ship(shipLength, shipName),
+      randomCoord,
+      false,
+      shipName
+    );
+  }
+}
+
+function addPlaceTurnClick() {
+  const shipsContainer = document.getElementById("ships-container");
+  const placeButton = document.getElementById("place-button");
+  placeButton.addEventListener("click", (e) => {
+    const currentPlayer = findCurrentPlayer();
+    const otherPlayer = findOtherPlayer(currentPlayer);
+    if (currentPlayer.area.shipCount === 5) {
+      //otherPlayer has placed already
+      if (otherPlayer.area.shipCount === 5) {
+        const turnButton = document.getElementById("turn-button");
+        turnButton.style.display = "block";
+        placeButton.style.display = "none";
+        addAllSpaceClickEvents();
+        addEndTurnClick();
+        removeAllShips();
+        startTurn(otherPlayer);
+        return;
+      }
+
+      //replace gets rid of event listener
+      resetShipPositions();
+      shipsContainer.replaceWith(shipsContainer.cloneNode(true));
+      clearBoard(currentPlayer);
+      placeTurn(otherPlayer);
+    }
+  });
 }
 
 export { clearGame, startGame };
