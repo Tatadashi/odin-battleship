@@ -1,10 +1,11 @@
 class Ship {
   #length;
   #hits;
-  constructor(length) {
+  constructor(length, name) {
     this.#length = length;
     this.#hits = 0;
     this.sunk = false;
+    this.name = name;
   }
 
   get length() {
@@ -62,11 +63,15 @@ class GameBoard {
 
     return arr;
   }
-  place(ship, coord, isVertical) {
+  place(ship, coord, isVertical, shipName) {
     if (
       this.hasRoom(ship, coord, isVertical) &&
       !this.isOccupied(ship, coord, isVertical)
     ) {
+      if (this.doesShipExistOnBoard(shipName)) {
+        this.removeShip(shipName);
+      }
+
       for (let i = 0; i < ship.length; i++) {
         if (isVertical) {
           this.#board[coord[0] + i][coord[1]].occupied = true;
@@ -81,6 +86,31 @@ class GameBoard {
     }
 
     return false;
+  }
+  doesShipExistOnBoard(shipName) {
+    for (let row = 0; row < 10; row++) {
+      for (let col = 0; col < 10; col++) {
+        if (this.#board[row][col].occupied) {
+          if (this.#board[row][col].occupant.name === shipName) {
+            return true;
+          }
+        }
+      }
+    }
+    
+    return false;
+  }
+  removeShip(shipName) {
+    for (let row = 0; row < 10; row++) {
+      for (let col = 0; col < 10; col++) {
+        if (this.#board[row][col].occupied) {
+          if (this.#board[row][col].occupant.name === shipName) {
+            this.#board[row][col].occupied = false;
+            this.#board[row][col].occupant = null;
+          }
+        }
+      }
+    }
   }
   hasRoom(ship, coord, isVertical) {
     if (isVertical) {
@@ -97,17 +127,23 @@ class GameBoard {
 
     return true;
   }
-  isOccupied(ship, coord, isVertical) {
+  isOccupied(ship, coord, isVertical, shipName) {
     for (let i = 0; i < ship.length; i++) {
       if (isVertical) {
-        if (this.#board[coord[0]][coord[1] + i].occupied) {
+        if (
+          this.#board[coord[0]][coord[1] + i].occupied &&
+          this.#board[coord[0]][coord[1] + i].occupant.name != shipName
+        ) {
           return true;
         }
         
         return false
       }
 
-      if (this.#board[coord[0] + i][coord[1]].occupied) {
+      if (
+        this.#board[coord[0]][coord[1] + i].occupied &&
+        this.#board[coord[0]][coord[1] + i].occupant.name != shipName
+      ) {
         return true;
       }
     }
