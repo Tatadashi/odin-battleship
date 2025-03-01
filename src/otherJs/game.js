@@ -12,6 +12,7 @@ import {
   removeAllShips,
   resetShipPositions,
   returnShipLengthBasedOnName,
+  addAllRotateClick,
 } from "./dragShips.js";
 import { Ship } from "./classes.js";
 
@@ -49,8 +50,11 @@ function showAndHideOverlay(currentPlayer, targetPlayer) {
 function computerShoot(targetPlayer) {
   const computer = findOtherPlayer(targetPlayer);
   if (computer.hasHit || computer.lastHitCoord.length > 0) {
-    //idk what the problem cause is, so hardcoded solution
-    if (computer.lastHitCoord.length > 0 == false) {
+    //idk what the problem cause is, so hardcoded solution (maybe fixed accidently, but not risking it)
+    if (
+      computer.lastHitCoord.length > 0 == false &&
+      targetPlayer.area.hasShips()
+    ) {
       computer.hasHit = false;
       startTurn(targetPlayer);
       return;
@@ -224,6 +228,7 @@ function placeTurn(player) {
 
   const boardDiv = document.getElementById(`board-${player.number}`);
   addDragAllShips(boardDiv, player);
+  addAllRotateClick(boardDiv, player);
 
   const otherPlayer = findOtherPlayer(player);
   showAndHideOverlay(otherPlayer, player);
@@ -244,10 +249,12 @@ function computerRandomPlaceAll(computer) {
 function computerRandomPlace(computer, shipName) {
   const shipLength = returnShipLengthBasedOnName(shipName);
   let randomCoord = getRandomCoord();
+  const random = Math.floor(Math.random() * 2);
+  const isVertical = random === 0 ? true : false;
   let hasPlaced = computer.area.place(
     new Ship(shipLength, shipName),
     randomCoord,
-    false,
+    isVertical,
     shipName
   );
 
@@ -256,7 +263,7 @@ function computerRandomPlace(computer, shipName) {
     hasPlaced = computer.area.place(
       new Ship(shipLength, shipName),
       randomCoord,
-      false,
+      isVertical,
       shipName
     );
   }
@@ -282,7 +289,7 @@ function addPlaceTurnClick() {
       }
 
       //replace gets rid of event listener
-      resetShipPositions();
+      resetShipPositions(currentPlayer);
       shipsContainer.replaceWith(shipsContainer.cloneNode(true));
       clearBoard(currentPlayer);
       placeTurn(otherPlayer);

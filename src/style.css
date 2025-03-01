@@ -6,6 +6,7 @@ body {
   flex-direction: column;
   flex-grow: 1;
   gap: 5px;
+  position: relative;
 }
 
 dialog {
@@ -86,8 +87,7 @@ dialog {
 
 #restart-button,
 #menu-button,
-#place-button
-#turn-button {
+#place-button #turn-button {
   padding-block: 5px;
   max-width: 100px;
   border-radius: 4px;
@@ -209,6 +209,14 @@ dialog {
 #patrol-boat {
   display: flex;
   position: absolute;
+}
+
+#carrier.vertical,
+#battleship.vertical,
+#destroyer.vertical,
+#submarine.vertical,
+#patrol-boat.vertical {
+  flex-direction: column;
 }
 
 #carrier {

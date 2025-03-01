@@ -137,23 +137,14 @@ class GameBoard {
     for (let i = 0; i < ship.length; i++) {
       if (isVertical) {
         if (this.#board[coord[0] + i][coord[1]].occupied) {
-          if (this.#board[coord[0] + i][coord[1]].occupant.name === shipName) {
-            return false;
+          if (this.#board[coord[0] + i][coord[1]].occupant.name !== shipName) {
+            return true;
           }
-          console.log("a");
-
+        }
+      } else if (this.#board[coord[0]][coord[1] + i].occupied) {
+        if (this.#board[coord[0]][coord[1] + i].occupant.name !== shipName) {
           return true;
         }
-
-        return false;
-      }
-
-      if (this.#board[coord[0]][coord[1] + i].occupied) {
-        if (this.#board[coord[0]][coord[1] + i].occupant.name === shipName) {
-          return false;
-        }
-
-        return true;
       }
     }
 
